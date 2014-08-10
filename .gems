@@ -7,3 +7,4 @@ sequel      -v 4.13.0
 pg          -v 0.17.1
 dotenv      -v 0.11.1
 rack-parser -v 0.6.0
+httparty    -v 0.13.1

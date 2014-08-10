@@ -1,6 +1,23 @@
 class CatulatorAPIServer < CatulatorServer
   plugin :halt
 
+  def current_user
+    return @current_user if @current_user
+
+    token = AccessToken.where(value: token_value).first
+
+    @current_user = token && token.user
+  end
+
+  def token_value
+    if env['HTTP_AUTHORIZATION']
+      auth_type, auth_data = env['HTTP_AUTHORIZATION'].split(' ', 2)
+      auth_type.downcase == 'bearer' && auth_data
+    else
+      params[:access_token]
+    end
+  end
+
   def create!(klass, attrs)
     object = klass.new attrs
 

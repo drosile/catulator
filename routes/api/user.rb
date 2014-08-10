@@ -15,7 +15,7 @@ class UserAPIRoutes < APIRoutes
         result = { token: token.value, user: user.to_hash }
         result.to_json
       else
-        'not authed'
+        unauthorized!
       end
     end
 
@@ -23,7 +23,7 @@ class UserAPIRoutes < APIRoutes
       current_user || unauthorized!
       AccessToken.delete(user_id: current_user.id) &&
         { success: true }.to_json
-      'failed'
+      { success: false }
     end
 
     r.on /(\d+)/ do |user_id|
