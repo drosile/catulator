@@ -2,6 +2,7 @@ class Cat < Sequel::Model
   plugin :validation_helpers
 
   many_to_one :user
+  one_to_many :diabetes_logs
 
   set_allowed_columns :name, :description, :image_url, :gender, :birthday, :user_id
 
