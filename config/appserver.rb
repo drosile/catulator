@@ -8,19 +8,30 @@ class CatulatorAppServer < CatulatorServer
     render('shared/404')
   end
 
-  def login(user_token, username)
+  def login(token, username)
     session[:user] = {
-      token: user_token,
+      token: token,
       username: username
     }
+    api_client = CatulatorAPIClient.new(token)
   end
 
   def logout
     session.delete(:user)
+    api_client = CatulatorAPIClient.new
   end
 
   def current_user
     session[:user]
+  end
+
+  def api_client
+    token = current_user && current_user[:token]
+    @api_client ||= CatulatorAPIClient.new(token)
+  end
+
+  def api_client=(client)
+    @api_client = client
   end
 end
 

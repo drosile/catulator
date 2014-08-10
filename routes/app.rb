@@ -10,11 +10,7 @@ class AppRoutes < CatulatorAppServer
     end
 
     r.post 'login' do
-      data = { identifier: params[:identifier],
-               password: params[:password] }
-      require 'pry'; binding.pry
-      results = CatulatorAPIClient.post('user/authenticate',
-                                        parameters: data)
+      results = api_client.login(params[:identifier], params[:password])
       if results[:token] && results[:user]
         login(results[:token], results[:user][:username])
         r.redirect '/log'
@@ -22,6 +18,13 @@ class AppRoutes < CatulatorAppServer
         r.redirect '/login'
       end
     end
+
+    r.get 'logout' do
+      results = api_client.logout
+      logout
+      r.redirect '/login'
+    end
+
 
     r.on 'log' do
       r.run LogRoutes

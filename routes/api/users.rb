@@ -22,8 +22,7 @@ class UsersAPIRoutes < APIRoutes
     r.post 'logout' do
       current_user || unauthorized!
       AccessToken.delete(user_id: current_user.id) &&
-        { success: true }.to_json
-      { success: false }
+        { success: true }.to_json || { success: false }.to_json
     end
 
     r.on /(\d+)/ do |user_id|
