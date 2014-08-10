@@ -1,2 +1,5 @@
 shotgun -v 0.9
-pry     -v 0.10.0
+pry -v 0.10.0
+rack-test -v 0.6.2
+minitest -v 5.4.0
+minitest-reporters -v 1.0.5

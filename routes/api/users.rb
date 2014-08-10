@@ -50,9 +50,7 @@ class UsersAPIRoutes < APIRoutes
 
     r.post do
       r.is do
-        current_user || unauthorized!
-        current_user.role == 'admin' || forbidden!
-        create! Cat, params.merge!({ user_id: current_user.id })
+        create! User, params
       end
     end
   end

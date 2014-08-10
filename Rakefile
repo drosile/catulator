@@ -10,6 +10,15 @@ task :console do
   exec 'pry -r./app'
 end
 
+desc "run all tests"
+task test: ["test:api"]
+
+namespace :test do
+  task :api do
+    run "test/api/**/*.rb"
+  end
+end
+
 namespace :db do
   desc "load env"
   task :environment do
@@ -33,5 +42,9 @@ namespace :db do
     Sequel::Migrator.run(DB, 'migrations')
     Rake::Task['db:version'].execute
   end
+end
+
+def run(dir)
+  Dir[dir].each { |file| load file }
 end
 
