@@ -12,7 +12,7 @@ class CatulatorAPIClient
       if @token
         { 'Authorization' => "Bearer #{@token}" }
       else
-        nil
+        {}
       end
     end
 
