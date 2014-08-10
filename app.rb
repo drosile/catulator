@@ -2,23 +2,24 @@ require 'roda'
 require 'haml'
 require 'rack'
 require 'tilt'
+require 'dotenv'
+require 'shield'
 
+Dotenv.load
+
+require_relative 'config/db'
 require_relative 'config/server'
+require_relative 'config/apiserver'
+require_relative 'config/appserver'
 
+
+Dir['./lib/**/*.rb'].each    { |file| require file }
+Dir['./models/**/*.rb'].each { |file| require file }
 Dir['./routes/**/*.rb'].each { |file| require file }
 
 class CatulatorApp < CatulatorServer
-  use Rack::Session::Cookie, secret: ENV['SECRET']
-
-  plugin :default_headers
-  plugin :indifferent_params
-  plugin :render, engine: 'haml'
-  plugin :not_found do
-    render('shared/404')
-  end
-
   route do |r|
-    r.get do
+    r.on do
       r.is '' do
         r.redirect '/log'
       end

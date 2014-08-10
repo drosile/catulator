@@ -1,2 +1,2 @@
 shotgun -v 0.9
-pry -v 0.10.0
+pry     -v 0.10.0

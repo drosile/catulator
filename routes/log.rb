@@ -1,4 +1,4 @@
-class LogRoutes < CatulatorServer
+class LogRoutes < CatulatorAppServer
   route do |r|
     r.is do
       'Log routes index'

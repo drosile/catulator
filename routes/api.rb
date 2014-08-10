@@ -1,4 +1,4 @@
-class APIRoutes < CatulatorServer
+class APIRoutes < CatulatorAPIServer
   route do |r|
     response.headers['Content-Type'] = 'application/json'
     r.is do
