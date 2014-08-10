@@ -9,6 +9,10 @@ class APIRoutes < CatulatorAPIServer
     r.on 'cats' do
       r.run CatsAPIRoutes
     end
+
+    r.on 'logs' do
+      r.run DiabetesLogsAPIRoutes
+    end
   end
 end
 
