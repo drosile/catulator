@@ -5,8 +5,8 @@ class APIRoutes < CatulatorAPIServer
       'API index'
     end
 
-    r.on 'user' do
-      r.run UserAPIRoutes
+    r.on 'users' do
+      r.run UsersAPIRoutes
     end
   end
 end

@@ -1,5 +1,5 @@
-class UserAPIRoutes < APIRoutes
-  #/api/user
+class UsersAPIRoutes < APIRoutes
+  #/api/users
   route do |r|
     r.is do
       'User api index'
