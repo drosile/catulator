@@ -25,6 +25,7 @@ namespace :db do
     version = if DB.tables.include?(:schema_info)
       DB[:schema_info].first[:version]
     end || 0
+    puts "Schema Version: #{version}"
   end
 
   desc "perform migrations"

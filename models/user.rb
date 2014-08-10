@@ -2,6 +2,7 @@ class User < Sequel::Model
   include Shield::Model
 
   plugin :validation_helpers
+  one_to_one :access_token
 
   set_allowed_columns :username, :name, :email, :password, :role
 

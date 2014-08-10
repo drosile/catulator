@@ -10,13 +10,20 @@ class UserAPIRoutes < APIRoutes
       user = User.authenticate(params[:identifier], params[:password])
 
       if user
-        token = 'abcdefg'
+        token = AccessToken.fetch(user_id: user.id)
 
-        result = { token: token, user: user.to_hash }
+        result = { token: token.value, user: user.to_hash }
         result.to_json
       else
         'not authed'
       end
+    end
+
+    r.post 'logout' do
+      current_user || unauthorized!
+      AccessToken.delete(user_id: current_user.id) &&
+        { success: true }.to_json
+      'failed'
     end
 
     r.on /(\d+)/ do |user_id|
