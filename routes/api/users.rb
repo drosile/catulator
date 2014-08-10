@@ -26,6 +26,7 @@ class UsersAPIRoutes < APIRoutes
     end
 
     r.on /(\d+)/ do |user_id|
+      current_user && current_user.id == user_id.to_i || unauthorized!
       r.is do
         user = User[user_id]
         user.to_hash.to_json

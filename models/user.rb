@@ -3,6 +3,7 @@ class User < Sequel::Model
 
   plugin :validation_helpers
   one_to_one :access_token
+  one_to_many :cats
 
   set_allowed_columns :username, :name, :email, :password, :role
 
