@@ -1,12 +1,9 @@
+require_relative '../api'
+
 class UsersAPIRoutes < APIRoutes
   #/api/users
   route do |r|
-    r.is do
-      'User api index'
-    end
-
     r.post 'authenticate' do
-      #require 'pry';binding.pry
       user = User.authenticate(params[:identifier], params[:password])
 
       if user
@@ -32,6 +29,5 @@ class UsersAPIRoutes < APIRoutes
         user.to_hash.to_json
       end
     end
-
   end
 end

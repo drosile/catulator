@@ -1,5 +1,16 @@
 class CatulatorAPIServer < CatulatorServer
+  class RodaResponse
+    def finish
+      if status == 204
+        headers.reject! { |k, _v| ["Content-Type", "Content-Length"].include? k }
+      end
+
+      [status, headers, body]
+    end
+  end
+
   plugin :halt
+  plugin :all_verbs
 
   def current_user
     return @current_user if @current_user
@@ -24,7 +35,22 @@ class CatulatorAPIServer < CatulatorServer
     error! object.errors unless object.save
 
     response.status = 201
-    object
+
+    halt 201, body: object.to_json
+  end
+
+  def read!(object)
+    halt 200, body: object.to_json
+  end
+
+  def update!(klass, id, attrs)
+    object = klass[id] || not_found!
+
+    object.set attrs
+
+    halt 422, body: { success: false, errors: object.errors } unless object.save
+
+    halt 200, body: object.to_json
   end
 
   def destroy!(klass, id)
@@ -41,6 +67,10 @@ class CatulatorAPIServer < CatulatorServer
 
   def unauthorized!(message = 'unauthorized')
     halt 401, body: { success: false, errors: [message] }
+  end
+
+  def forbidden!(message = 'forbidden')
+    halt 403, body: { success: false, errors: [message] }
   end
 
   def no_content!

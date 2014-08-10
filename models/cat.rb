@@ -3,12 +3,12 @@ class Cat < Sequel::Model
 
   many_to_one :user
 
-  set_allowed_columns :name, :description, :image_url, :gender, :birthday
+  set_allowed_columns :name, :description, :image_url, :gender, :birthday, :user_id
 
   private
 
   def validate
-    validates_presence [:name]
+    validates_presence [:name, :user_id]
 
     super
   end
