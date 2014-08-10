@@ -23,10 +23,36 @@ class UsersAPIRoutes < APIRoutes
     end
 
     r.on /(\d+)/ do |user_id|
-      current_user && current_user.id == user_id.to_i || unauthorized!
+      current_user || unauthorized!
+      (current_user.id == user_id.to_i) || (current_user.role == 'admin') || forbidden!
+      @user = User[user_id] || not_found!
+
+      r.get do
+        r.is do
+          read! @user
+        end
+      end
+
+      r.put do
+        r.is do
+          update! User, @user.id, params
+        end
+      end
+    end
+
+    r.get do
       r.is do
-        user = User[user_id]
-        user.to_hash.to_json
+        current_user || unauthorized!
+        current_user.role == 'admin' || forbidden!
+        halt 200, body: { users: User.all }
+      end
+    end
+
+    r.post do
+      r.is do
+        current_user || unauthorized!
+        current_user.role == 'admin' || forbidden!
+        create! Cat, params.merge!({ user_id: current_user.id })
       end
     end
   end

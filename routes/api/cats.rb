@@ -8,17 +8,24 @@ class CatsAPIRoutes < APIRoutes
       @cat = Cat[cat_id.to_i] || not_found!
       current_user.id == @cat.user_id || forbidden!
       r.get do
-        read! @cat
+        r.is do
+          read! @cat
+        end
       end
 
       r.put do
-        update! Cat, @cat.id, params.merge!({ user_id: current_user.id })
+        r.is do
+          update! Cat, @cat.id, params.merge!({ user_id: current_user.id })
+        end
       end
 
       r.delete do
-        destroy! Cat, @cat.id
+        r.is do
+          destroy! Cat, @cat.id
+        end
       end
     end
+
     r.get do
       r.is do
         halt 200, body: { cats: current_user.cats }
@@ -26,8 +33,9 @@ class CatsAPIRoutes < APIRoutes
     end
 
     r.post do
-      create! Cat, params.merge!({ user_id: current_user.id })
+      r.is do
+        create! Cat, params.merge!({ user_id: current_user.id })
+      end
     end
-
   end
 end

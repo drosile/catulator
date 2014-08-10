@@ -17,6 +17,10 @@ class User < Sequel::Model
     super.tap { |h| h.delete(:crypted_password) }
   end
 
+  def to_json
+    to_hash.to_json
+  end
+
   private
 
   def validate
