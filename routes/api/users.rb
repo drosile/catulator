@@ -35,6 +35,10 @@ class UsersAPIRoutes < APIRoutes
 
       r.put do
         r.is do
+          if params[:role] != 'user'
+            current_user || unauthorized!
+            current_user.role == 'admin' || forbidden!
+          end
           update! User, @user.id, params
         end
       end
@@ -50,6 +54,10 @@ class UsersAPIRoutes < APIRoutes
 
     r.post do
       r.is do
+        if params[:role] != 'user'
+          current_user || unauthorized!
+          current_user.role == 'admin' || forbidden!
+        end
         create! User, params
       end
     end
