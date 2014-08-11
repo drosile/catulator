@@ -23,6 +23,7 @@ class UsersAPIRoutes < APIRoutes
     end
 
     r.on /(\d+)/ do |user_id|
+      # single user routes, only available to admin or the user
       current_user || unauthorized!
       (current_user.id == user_id.to_i) || (current_user.role == 'admin') || forbidden!
       @user = User[user_id] || not_found!
@@ -35,11 +36,17 @@ class UsersAPIRoutes < APIRoutes
 
       r.put do
         r.is do
-          if params[:role] != 'user'
+          if params[:role] == 'admin'
             current_user || unauthorized!
             current_user.role == 'admin' || forbidden!
           end
           update! User, @user.id, params
+        end
+      end
+
+      r.delete do
+        r.is do
+          destroy! User, @user.id
         end
       end
     end

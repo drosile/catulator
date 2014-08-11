@@ -1,4 +1,4 @@
-task default: :start
+task default: :test
 
 desc "start app"
 task :start do

@@ -9,7 +9,7 @@ class MiniTest::Spec
     super(uri, data.to_json, *opts)
   end
 
-  def put(uri, data = {} *opts)
+  def put(uri, data = {}, *opts)
     super(uri, data.to_json, *opts)
   end
 

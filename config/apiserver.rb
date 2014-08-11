@@ -1,8 +1,34 @@
+require 'rack/parser'
+
 class CatulatorAPIServer < CatulatorServer
   class RodaResponse
+    def initialize(body = [], status = 200, headers = {})
+      @body, @headers, @status = [], headers, status
+      @length = 0
+
+      @headers['Content-Type'] = 'application/json'
+
+      if body.respond_to? :to_str
+        write body.to_str
+      elsif body.respond_to? :each
+        body.each { |i| write i.to_s }
+      else
+        fail TypeError, 'body must #respond_to? #to_str or #each'
+      end
+    end
+
+    def write(data)
+      data = data.to_json unless data.is_a? String
+      @length += data.bytesize
+
+      body << data
+    end
+
     def finish
       if status == 204
         headers.reject! { |k, _v| ["Content-Type", "Content-Length"].include? k }
+      else
+        headers['Content-Length'] = @length.to_s
       end
 
       [status, headers, body]
@@ -11,6 +37,8 @@ class CatulatorAPIServer < CatulatorServer
 
   plugin :halt
   plugin :all_verbs
+
+  use Rack::Parser
 
   def current_user
     return @current_user if @current_user
