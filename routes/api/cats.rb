@@ -5,40 +5,35 @@ class CatsAPIRoutes < APIRoutes
   route do |r|
     r.on /(\d+)/ do |cat_id|
       @cat = Cat[cat_id.to_i] || not_found!
-      r.get do
-        r.is do
-          read! @cat
-        end
+      r.get true do
+        read! @cat
       end
 
-      r.put do
+      r.put true do
         current_user || unauthorized!
-        current_user.id == @cat.user_id || forbidden!
-        r.is do
-          update! Cat, @cat.id, params.merge!({ user_id: current_user.id })
-        end
+        (current_user.id == @cat.user_id) || admin? || forbidden!
+
+        update! Cat, @cat.id, params.merge!({ user_id: current_user.id })
       end
 
-      r.delete do
+      r.delete true do
         current_user || unauthorized!
-        current_user.id == @cat.user_id || forbidden!
-        r.is do
-          destroy! Cat, @cat.id
-        end
+        (current_user.id == @cat.user_id) || admin? || forbidden!
+
+        destroy! Cat, @cat.id
       end
     end
 
-    r.get do
-      r.is do
-        halt 200, body: { cats: Cat.all }
-      end
+    r.get true do
+      halt 200, body: { cats: Cat.all }
     end
 
-    r.post do
+    r.post true do
       current_user || unauthorized!
-      r.is do
-        create! Cat, params.merge!({ user_id: current_user.id })
+      if params[:user_id]
+        (params[:user_id].to_i == current_user.id) || admin? || forbidden!
       end
+      create! Cat, params.merge!({ user_id: current_user.id })
     end
   end
 end

@@ -48,6 +48,10 @@ class CatulatorAPIServer < CatulatorServer
     @current_user = token && token.user
   end
 
+  def admin?
+    current_user && current_user.role == 'admin'
+  end
+
   def token_value
     if env['HTTP_AUTHORIZATION']
       auth_type, auth_data = env['HTTP_AUTHORIZATION'].split(' ', 2)
