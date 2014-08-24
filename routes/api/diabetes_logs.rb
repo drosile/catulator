@@ -5,40 +5,36 @@ class DiabetesLogsAPIRoutes < APIRoutes
   route do |r|
     r.on /(\d+)/ do |log_id|
       @log = DiabetesLog[log_id.to_i] || not_found!
-      r.get do
-        r.is do
-          read! @log
-        end
+
+      r.get true do
+        read! @log
       end
 
-      r.put do
+      r.put true do
         current_user || unauthorized!
-        current_user.id == @log.cat.user_id || forbidden!
-        r.is do
-          update! DiabetesLog, @log.id, params
-        end
+        current_user.id == @log.cat.user_id || admin? || forbidden!
+
+        update! DiabetesLog, @log.id, params
       end
 
-      r.delete do
+      r.delete true do
         current_user || unauthorized!
-        current_user.id == @log.cat.user_id || forbidden!
-        r.is do
-          destroy! DiabetesLog, @log.id
-        end
+        current_user.id == @log.cat.user_id || admin? || forbidden!
+
+        destroy! DiabetesLog, @log.id
       end
     end
 
-    r.get do
-      r.is do
-        halt 200, body: { diabetes_logs: DiabetesLog.all }
-      end
+    r.get true do
+      halt 200, body: { diabetes_logs: DiabetesLog.all }
     end
 
-    r.post do
+    r.post true do
       current_user || unauthorized!
-      r.is do
-        create! DiabetesLog, params
-      end
+      cat = Cat[params[:cat_id]] || error!([cat_id: 'invalid_id'])
+      current_user.id == cat.user_id || admin? || forbidden!
+
+      create! DiabetesLog, params
     end
   end
 end

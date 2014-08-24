@@ -11,8 +11,14 @@ class DiabetesLog < Sequel::Model
 
   private
 
+  def before_create
+    self.timestamp ||= Time.now
+
+    super
+  end
+
   def validate
-    validates_presence [:timestamp]
+    validates_presence [:cat]
     validates_length_range 0..255, :remarks
 
     super
