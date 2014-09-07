@@ -34,7 +34,7 @@ class CatulatorAPIClient
       url = URI.encode("#{api_url}/#{path}")
       response = HTTParty.send(method, url, arguments)
 
-      response.parsed_response
+      response.parsed_response.recursive_symbolize_keys!
     end
 
     def api_url

@@ -1,7 +1,7 @@
 require 'roda'
 require 'haml'
 require 'rack'
-require 'tilt'
+require 'tilt/haml'
 require 'dotenv'
 require 'shield'
 

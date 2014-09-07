@@ -4,14 +4,31 @@
   %script{src: '//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'}
 %body
   %nav{class: 'navbar navbar-default', role: 'navigation'}
-    %a{ class: 'btn btn-default navbar-btn',
-        type: 'button',
-        href: '/login' }Sign In
-    %a{ class: 'btn btn-default navbar-btn',
-        type: 'button',
-        href: '/logout' }Sign Out
-    - if current_user
-      %p{class: 'navbar-text navbar-right'}
-        = "Signed in as #{current_user[:username]}"
-  %section
+    .container
+      .navbar-header
+        %button{type: 'button', class: 'navbar-toggle collapsed',
+                'data-toggle' => 'collapse', 'data-target' => '.navbar-collapse'}
+          %span{class: 'sr-only'}Toggle navigation
+          %span{class: 'icon-bar'}
+          %span{class: 'icon-bar'}
+          %span{class: 'icon-bar'}
+        %a{class: 'navbar-brand', href: '/'}The Catulator
+      %div{class: 'navbar-collapse collapse'}
+        - if current_user
+          .navbar-right
+            %p{class: 'navbar-text'}Signed in as #{current_user[:username]}
+            %form{class: 'navbar-form navbar-right', role: 'form',
+                  action: '/logout', method: 'post'}
+              %button{type: 'submit', class: 'btn btn-default'}Sign out
+        - else
+          %form{class: 'navbar-form navbar-right', role: 'form',
+                action: '/login', method: 'post'}
+            .form-group
+              %input{type: 'text', placeholder: 'email or username',
+                     name: 'identifier', class: 'form-control'}
+            .form-group
+              %input{type: 'password', placeholder: 'password',
+                     name: 'password', class: 'form-control'}
+            %button{type: 'submit', class: 'btn btn-success'}Sign in
+  .container
     = yield

@@ -1,32 +1,28 @@
 class AppRoutes < CatulatorAppServer
   route do |r|
-    r.is '' do
-      current_user && r.redirect('/log')
-      r.redirect '/login'
-    end
-
-    r.get 'login' do
-      view('login')
+    r.get '' do
+      view('landing')
     end
 
     r.post 'login' do
       results = api_client.login(params[:identifier], params[:password])
       if results[:token] && results[:user]
-        login(results[:token], results[:user]["username"])
+        login(results[:token], results[:user][:username])
         r.redirect '/log'
       else
-        r.redirect '/login'
+        r.redirect '/'
       end
     end
 
-    r.get 'logout' do
+    r.post 'logout' do
       results = api_client.logout
       logout
-      r.redirect '/login'
+      r.redirect '/'
     end
 
 
     r.on 'log' do
+      current_user || r.redirect('/')
       r.run LogRoutes
     end
   end
