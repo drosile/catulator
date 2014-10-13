@@ -8,6 +8,8 @@ require_relative 'api-client/users'
 class CatulatorAPIClient
   include CatulatorAPIClient::HTTP
   include CatulatorAPIClient::Users
+  include CatulatorAPIClient::Cats
+  include CatulatorAPIClient::Logs
 
   def initialize(token = nil)
     @token = token

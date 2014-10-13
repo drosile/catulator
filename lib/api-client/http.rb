@@ -8,6 +8,14 @@ class CatulatorAPIClient
       http_request(:post, path, options)
     end
 
+    def put(path, options = {})
+      http_request(:put, path, options)
+    end
+
+    def delete(path, options = {})
+      http_request(:delete, path, options)
+    end
+
     def auth_header
       if @token
         { 'Authorization' => "Bearer #{@token}" }
