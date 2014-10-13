@@ -1,7 +1,7 @@
 class LogRoutes < CatulatorAppServer
   route do |r|
     r.is do
-      view('log/index')
+      view('logs/index')
     end
   end
 end

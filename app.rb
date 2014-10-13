@@ -7,7 +7,6 @@ require 'shield'
 
 Dotenv.load
 
-
 require_relative 'config/db'
 require_relative 'config/server'
 require_relative 'config/apiserver'
