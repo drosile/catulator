@@ -4,6 +4,10 @@ class CatulatorAPIClient
       post('cats', headers: auth_header, parameters: attrs)
     end
 
+    def get_cats
+      get("cats", headers: auth_header)
+    end
+
     def get_cat(id)
       get("cats/#{id}", headers: auth_header)
     end

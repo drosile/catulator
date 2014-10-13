@@ -5,13 +5,14 @@ class CatulatorAppServer < CatulatorServer
 
   plugin :render, engine: 'haml'
   plugin :not_found do
-    render('shared/404')
+    view('shared/404')
   end
 
-  def login(token, username)
+  def login(token, username, id)
     session[:user] = {
       token: token,
-      username: username
+      username: username,
+      id: id
     }
     api_client = CatulatorAPIClient.new(token)
   end

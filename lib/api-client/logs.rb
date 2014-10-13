@@ -1,7 +1,11 @@
 class CatulatorAPIClient
   module Logs
     def create_log(attrs)
-      post('log', headers: auth_header, parameters: attrs)
+      post('logs', headers: auth_header, parameters: attrs)
+    end
+
+    def get_logs
+      get("logs", headers: auth_header)
     end
 
     def get_log(id)

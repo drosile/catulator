@@ -1,0 +1,28 @@
+%form{method: "POST", action: "/logs"}
+  .form-group
+    %label
+      Cat
+      %select{class: 'form-control', name: "cat_id"}
+        - cats.each do |cat|
+          %option{value: cat[:id]}= cat[:name]
+  .form-group
+    %label
+      Blood Glucose
+      %input{class: 'form-control', type: 'text', name: "blood_glucose",
+             placeholder: "Blood Glucose"}
+  .form-group
+    %label
+      Dose Amount
+      %input{class: 'form-control', type: 'text', name: "dose_amount",
+             placeholder: "Dose Amount"}
+  .form-group
+    %label
+      Remarks
+      %textarea{class: 'form-control', name: "remarks",
+                rows: '3', placeholder: "Remarks"}
+  .form-group
+    %label
+      Timestamp
+      %input{class: 'form-control', type: 'text', name: "timestamp",
+             placeholder: "Timestamp"}
+  %input{class: 'btn btn-success', type: 'submit', value: "Submit"}

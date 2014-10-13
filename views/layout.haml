@@ -14,6 +14,11 @@
           %span{class: 'icon-bar'}
         %a{class: 'navbar-brand', href: '/'}The Catulator
       %div{class: 'navbar-collapse collapse'}
+        %ul{class: 'nav navbar-nav'}
+          %li
+            %a{href: '/cats'}Cats
+          %li
+            %a{href: '/logs'}Logs
         - if current_user
           .navbar-right
             %p{class: 'navbar-text'}Signed in as #{current_user[:username]}

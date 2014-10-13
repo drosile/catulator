@@ -1,0 +1,31 @@
+%section
+  %h2 Your cats
+  %section
+    - if cats.empty?
+      You don't have any cats listed in The Catulator!
+    - else
+      %table{class: 'table'}
+        %thead
+          %tr
+            %th Name
+            %th Description
+            %th Image URL
+            %th Gender
+            %th Birthday
+            %th Owner
+            %th Delete?
+        %tbody
+        - cats.each do |cat|
+          %tr
+            %td= cat[:name]
+            %td= cat[:description]
+            %td= cat[:image_url]
+            %td= cat[:gender]
+            %td= cat[:birthday]
+            %td= cat[:owner][:name] || cat[:owner][:username]
+            %td
+              %form{method: 'POST', action: "cats/#{cat[:id]}/delete"}
+                %input{type: 'submit', value: 'DELETE', class: 'btn btn-danger'}
+
+  %section
+    %a{href: "/cats/create", class: "btn btn-primary"}Add a Cat

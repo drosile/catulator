@@ -32,8 +32,10 @@ class CatsAPIRoutes < APIRoutes
       current_user || unauthorized!
       if params[:user_id]
         (params[:user_id].to_i == current_user.id) || admin? || forbidden!
+      else
+        params.merge!({ user_id: current_user.id })
       end
-      create! Cat, params.merge!({ user_id: current_user.id })
+      create! Cat, params
     end
   end
 end

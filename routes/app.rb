@@ -7,7 +7,7 @@ class AppRoutes < CatulatorAppServer
     r.post 'login' do
       results = api_client.login(params[:identifier], params[:password])
       if results[:token] && results[:user]
-        login(results[:token], results[:user][:username])
+        login(results[:token], results[:user][:username], results[:user][:id])
         r.redirect '/logs'
       else
         r.redirect '/'
@@ -22,7 +22,12 @@ class AppRoutes < CatulatorAppServer
 
     r.on 'logs' do
       current_user || r.redirect('/')
-      r.run LogRoutes
+      r.run LogsRoutes
+    end
+
+    r.on 'cats' do
+      current_user || r.redirect('/')
+      r.run CatsRoutes
     end
   end
 end

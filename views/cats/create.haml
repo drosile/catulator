@@ -1,0 +1,31 @@
+%form{method: "POST", action: "/cats"}
+  .form-group
+    %label
+      Name
+      %input{class: 'form-control', type: 'text', name: "name",
+             placeholder: "Name", required: "required"}
+  .form-group
+    %label
+      Description
+      %textarea{class: 'form-control', name: "description",
+                rows: '3', placeholder: "Description"}
+  .form-group
+    %label
+      Image URL
+      %input{class: 'form-control', type: 'text', name: "image_url",
+             placeholder: "Image URL"}
+  .form-group
+    %strong Gender
+    .radio
+      %label
+        %input{type: 'radio', name: "gender", value: "M"}Male
+    .radio
+      %label
+        %input{type: 'radio', name: "gender", value: "F"}Female
+  .form-group
+    %label
+      Birthday
+      %input{class: 'form-control', type: 'text', name: "birthday",
+             placeholder: "Date of Birth"}
+  %input{type: 'hidden', name: "user_id", value: current_user[:id]}
+  %input{class: 'btn btn-success', type: 'submit', value: "Submit"}

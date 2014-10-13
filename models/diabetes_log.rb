@@ -19,7 +19,9 @@ class DiabetesLog < Sequel::Model
 
   def validate
     validates_presence [:cat]
-    validates_length_range 0..255, :remarks
+    if remarks
+      validates_length_range 0..255, :remarks
+    end
 
     super
   end

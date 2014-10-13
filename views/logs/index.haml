@@ -1,2 +1,25 @@
 %section
-  Logs routes index
+  %h2 Your log entries
+  %section
+    - if logs.empty?
+      You don't have any log entries listed in The Catulator!
+    - else
+      %table{class: 'table'}
+        %thead
+          %tr
+            %th Cat
+            %th Blood Glucose
+            %th Dose Amount
+            %th Remarks
+            %th Timestamp
+        %tbody
+        - logs.each do |log|
+          %tr
+            %td= log[:cat_id]
+            %td= log[:blood_glucose]
+            %td= log[:dose_amount]
+            %td= log[:remarks]
+            %td= log[:timestamp]
+
+  %section
+    %a{href: "/logs/create", class: "btn btn-primary"}Add a Log Entry

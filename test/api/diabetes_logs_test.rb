@@ -79,6 +79,25 @@ describe 'diabetes logs' do
       assert_equal 201, last_response.status
       assert_equal log_count + 1, DiabetesLog.count
     end
+
+    it 'works with only dose amount and cat ID' do
+      log_count = DiabetesLog.count
+
+      attrs = {
+        cat_id: @cat.id,
+        blood_glucose: 150,
+      }
+
+      header "Authorization", "Bearer #{@user_token}"
+      post '/api/logs', attrs
+
+      assert_equal 201, last_response.status
+      assert_equal log_count + 1, DiabetesLog.count
+      assert_equal @cat.id,  parsed_body[:cat_id]
+      assert_equal 150, parsed_body[:blood_glucose]
+      assert parsed_body[:timestamp]
+    end
+
   end
 
   describe 'GET /api/logs' do
